@@ -54,5 +54,5 @@ def insert_df_to_db(df: pd.DataFrame) -> dict:
 
 
 if __name__ == "__main__":
-    #insert_questions_to_db()
+    insert_questions_to_db()
     insert_users_to_db()
