@@ -1,3 +1,4 @@
+import json
 import os
 import django
 import pandas as pd
@@ -7,6 +8,8 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "survey_backend.settings")
 django.setup()
 
 from survey.models import Question
+from employees.models import Employee
+
 
 def insert_questions_to_db():
 
@@ -14,6 +17,16 @@ def insert_questions_to_db():
     df = pd.read_excel(file)
     insert_df_to_db(df)
 
+
+def insert_users_to_db():
+    with open("files/users.json", "r") as file:
+        data = json.load(file)
+        for user in data:
+            try:
+                result = Employee.objects.create(**user)
+                print(f"Пользователь {result} успешно создан")
+            except Exception as e:
+                print(e)
 
 
 def insert_df_to_db(df: pd.DataFrame) -> dict:
@@ -42,3 +55,4 @@ def insert_df_to_db(df: pd.DataFrame) -> dict:
 
 if __name__ == "__main__":
     insert_questions_to_db()
+    insert_users_to_db()
