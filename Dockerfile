@@ -12,4 +12,5 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 USER ${USER}
 
-COPY survey_backend/ .
+COPY docker/ docker/
+COPY survey_backend/ survey_backend/
