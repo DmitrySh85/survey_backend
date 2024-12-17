@@ -9,7 +9,7 @@ class Question(models.Model):
     third_answer = models.TextField(max_length=300, null=True, blank=True)
     fourth_answer = models.TextField(max_length=300, null=True, blank=True)
     valid_answer_number = models.IntegerField()
-    description = models.TextField(max_length=300, null=True, blank=True)
+    description = models.TextField(null=True, blank=True)
 
     def __str__(self):
         return self.text
