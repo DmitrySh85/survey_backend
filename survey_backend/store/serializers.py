@@ -2,10 +2,12 @@ from rest_framework.fields import UUIDField
 from rest_framework.serializers import (
     ModelSerializer,
     IntegerField,
-    ValidationError
+    ValidationError,
+    PrimaryKeyRelatedField
 )
 from .models import Item, Order
 from employees.models import Employee
+from employees.serializers import EmployeeSerializer
 
 
 class ItemSerializer(ModelSerializer):
@@ -15,6 +17,11 @@ class ItemSerializer(ModelSerializer):
 
 
 class OrderSerializer(ModelSerializer):
+
+    item_details = ItemSerializer(source='item', read_only=True)
+    purchaser_details = EmployeeSerializer(source='purchaser', read_only=True)
+
+
     class Meta:
         model = Order
         fields = "__all__"
@@ -35,4 +42,10 @@ class OrderSerializer(ModelSerializer):
         purchaser.save()
 
         return order
+    
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        representation['item'] = representation.pop('item_details')
+        representation['purchaser'] = representation.pop('purchaser_details')
+        return representation
 
